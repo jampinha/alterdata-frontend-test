@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar v-if="!isBooting" app color="primary" dark>
+    <v-app-bar v-if="isInside" app color="primary" dark>
       APPLICATION
     </v-app-bar>
 
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import ALoader from './atoms/ALoader.vue';
 
 export default {
@@ -34,13 +34,15 @@ export default {
     //
   }),
   computed: {
-    ...mapGetters(['isBooting'])
+    ...mapGetters(['isBooting', 'isInside'])
   },
   methods: {
     ...mapMutations(['SET_READY_STATE']),
+    ...mapActions(['changeAppScope']),
 
     boot() {
       setTimeout(() => {
+        this.changeAppScope('PUBLIC')
         this.SET_READY_STATE()
       }, 2000)
     }
