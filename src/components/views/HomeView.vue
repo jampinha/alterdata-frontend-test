@@ -1,14 +1,15 @@
 <template>
-  <t-internal-page>
-    This is the home page
-  </t-internal-page>
+  <TInternalPage>
+    <OFormLogin />
+  </TInternalPage>
 </template>
 
 <script>
+import OFormLogin from '../organisms/OFormLogin.vue';
 import TInternalPage from '../templates/TInternalPage.vue';
 
 export default {
   name: 'HomeView',
-  components: { TInternalPage }
+  components: { TInternalPage, OFormLogin }
 }
 </script>
