@@ -52,9 +52,9 @@ export default {
       this.SET_READY_STATE()
     },
     logout() {
+      this.$http.delete('/logout')
       this['auth/logout']()
       this.$router.push({ name: 'LOGIN' })
-      this.$http.delete('/logout')
     }
   },
   beforeMount() {
