@@ -6,6 +6,7 @@ Vue.use(Vuex);
 import { SET_APP_SCOPE, SET_READY_STATE } from "./mutation-types";
 
 import { authStore } from "./auth.store";
+import { userStore } from "./user.store";
 
 const APP_SCOPES = ["BOOTING", "PUBLIC", "PRIVATE"];
 
@@ -38,5 +39,6 @@ export default new Vuex.Store({
   },
   modules: {
     auth: authStore,
+    user: userStore,
   },
 });

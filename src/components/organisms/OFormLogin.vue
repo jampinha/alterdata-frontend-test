@@ -56,7 +56,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['auth/login']),
+    ...mapActions(['auth/login', 'user/create']),
 
     onBeforeFormSubmit() {
       this.$v.$touch()
@@ -69,9 +69,18 @@ export default {
           senha: this.payload.password,
         })
 
-        const { token } = data
+        const { token, usuario } = data
 
         this['auth/login'](token)
+        this['user/create']({
+          accountId: usuario.id,
+          profileId: usuario.perfil.id,
+          name: usuario.nome,
+          email: usuario.email,
+          role: usuario.perfil.descricao,
+          photo: usuario.foto,
+        })
+        
         this.$router.push({ name: 'ABOUT' })
       } catch (error) {
         console.log('Ops, houve um erro durante o login')

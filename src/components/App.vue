@@ -40,19 +40,39 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_READY_STATE']),
-    ...mapActions(['changeAppScope', 'auth/login', 'auth/logout']),
+    ...mapActions([
+      'changeAppScope',
+      'auth/login',
+      'auth/logout',
+      'user/create',
+      'user/destroy',
+    ]),
 
-    boot() {
+    async boot() {
       const token = localStorage.getItem('token')
       if (!token) {
         this.changeAppScope('PUBLIC')
       } else {
+        const user = localStorage.getItem('user')
+        await this.resume(user)
         this['auth/login'](token)
+        this.changeAppScope('PRIVATE')
       }
       this.SET_READY_STATE()
     },
-    logout() {
-      this.$http.delete('/logout')
+    async resume(accountId) {
+      const { data } = await this.$http.get(`/usuarios/${accountId}`)
+      this['user/create']({
+        accountId: data.id,
+        profileId: data.perfil.id,
+        name: data.nome,
+        email: data.email,
+        role: data.perfil.descricao,
+        photo: data.foto,
+      })
+    },
+    async logout() {
+      await this.$http.delete('/logout')
       this['auth/logout']()
       this.$router.push({ name: 'LOGIN' })
     }

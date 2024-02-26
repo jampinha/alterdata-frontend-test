@@ -3,3 +3,7 @@ export const SET_APP_SCOPE = "SET_APP_SCOPE";
 
 // AUTH
 export const SET_TOKEN = "SET_TOKEN";
+
+// USER
+export const SET_USER_ACCOUNT = "SET_USER_ACCOUNT"
+export const SET_USER_PROFILE = "SET_USER_PROFILE"
