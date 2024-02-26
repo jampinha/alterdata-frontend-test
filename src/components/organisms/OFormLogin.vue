@@ -1,5 +1,5 @@
 <template>
-  <MFormulary :loading="isFetching" @submit.prevent="submit">
+  <MFormulary :loading="isLoading" @submit.prevent="submit">
     <AInputEmail v-model.trim="$v.payload.usermail.$model" :required="true" :error-messages="emailErrors"
       @input="$v.payload.usermail.$touch()" @blur="$v.payload.usermail.$touch()" />
     <AInputPassword v-model.trim="$v.payload.password.$model" :required="true" :error-messages="passwordErrors"
@@ -10,6 +10,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength } from 'vuelidate/lib/validators'
+import { mapActions } from 'vuex';
 
 import FormMixin from '@/mixins/FormMixin'
 import AInputEmail from '@/components/atoms/AInputEmail.vue';
@@ -55,11 +56,16 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['auth/login']),
+
     onBeforeFormSubmit() {
       this.$v.$touch()
       return !this.$v.$invalid
     },
-    async onFormSubmit() {}
+    async onFormSubmit() {
+      this['auth/login']('fake-token')
+      this.$router.push({ name: 'ABOUT' })
+    }
   },
 }
 </script>

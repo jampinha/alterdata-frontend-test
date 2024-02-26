@@ -34,21 +34,24 @@ export default {
     //
   }),
   computed: {
-    ...mapGetters(['isBooting', 'isInside'])
+    ...mapGetters(['isBooting', 'isInside', 'auth/isAuthenticated'])
   },
   methods: {
     ...mapMutations(['SET_READY_STATE']),
-    ...mapActions(['changeAppScope']),
+    ...mapActions(['changeAppScope', 'auth/login']),
 
     boot() {
-      setTimeout(() => {
+      const token = localStorage.getItem('token')
+      if (!token) {
         this.changeAppScope('PUBLIC')
-        this.SET_READY_STATE()
-      }, 2000)
+      } else {
+        this['auth/login'](token)
+      }
+      this.SET_READY_STATE()
     }
   },
-  mounted() {
+  beforeMount() {
     this.boot()
-  }
+  },
 };
 </script>
