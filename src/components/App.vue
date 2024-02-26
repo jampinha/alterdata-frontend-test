@@ -2,6 +2,8 @@
   <v-app>
     <v-app-bar v-if="isInside" app color="primary" dark>
       APPLICATION
+      <v-spacer></v-spacer>
+      <v-btn @click="logout">Sair</v-btn>
     </v-app-bar>
 
     <v-main v-if="!isBooting">
@@ -38,7 +40,7 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_READY_STATE']),
-    ...mapActions(['changeAppScope', 'auth/login']),
+    ...mapActions(['changeAppScope', 'auth/login', 'auth/logout']),
 
     boot() {
       const token = localStorage.getItem('token')
@@ -48,10 +50,17 @@ export default {
         this['auth/login'](token)
       }
       this.SET_READY_STATE()
+    },
+    logout() {
+      this['auth/logout']()
+      this.$router.push({ name: 'LOGIN' })
+      this.$http.delete('/logout')
     }
   },
   beforeMount() {
-    this.boot()
+    setTimeout(() => {
+      this.boot()
+    }, 2000)
   },
 };
 </script>
