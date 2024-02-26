@@ -5,6 +5,8 @@ Vue.use(Vuex);
 
 import { SET_APP_SCOPE, SET_READY_STATE } from "./mutation-types";
 
+import { authStore } from "./auth.store";
+
 const APP_SCOPES = ["BOOTING", "PUBLIC", "PRIVATE"];
 
 export default new Vuex.Store({
@@ -23,16 +25,18 @@ export default new Vuex.Store({
       state.ready = true;
     },
     [SET_APP_SCOPE](state, value) {
-      const isValidValue = APP_SCOPES.includes(value.toUpperCase())
+      const isValidValue = APP_SCOPES.includes(value.toUpperCase());
 
-      if (!isValidValue) return
-      state.scope = value
-    }
+      if (!isValidValue) return;
+      state.scope = value;
+    },
   },
   actions: {
     changeAppScope({ commit }, scope) {
-      commit('SET_APP_SCOPE', scope)
-    }
+      commit("SET_APP_SCOPE", scope);
+    },
   },
-  modules: {},
+  modules: {
+    auth: authStore,
+  },
 });
