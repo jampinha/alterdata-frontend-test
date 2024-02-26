@@ -63,8 +63,20 @@ export default {
       return !this.$v.$invalid
     },
     async onFormSubmit() {
-      this['auth/login']('fake-token')
-      this.$router.push({ name: 'ABOUT' })
+      try {
+        const { data } = await this.$http.post('/login', {
+          email: this.payload.usermail,
+          senha: this.payload.password,
+        })
+
+        const { token } = data
+
+        this['auth/login'](token)
+        this.$router.push({ name: 'ABOUT' })
+      } catch (error) {
+        console.log('Ops, houve um erro durante o login')
+        console.log(error)
+      }
     }
   },
 }
